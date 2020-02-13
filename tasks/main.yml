@@ -1,0 +1,32 @@
+---
+- name: ensure var "extra_path" is defined
+  include_role:
+    name: mandatory
+  vars:
+    extra_path: /opt/foo/bin
+- name: "determine file {{ env_file_path }} exists or not"
+  stat:
+    path: "{{ env_file_path }}"
+  register: env_file
+- name: "determine file {{ env_file_path }} contains 'PATH=' or not"
+  lineinfile:
+    path: "{{ env_file_path }}"
+    regexp: ".*?(?!PATH=.*?).*?"
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: path_in_env_file_content
+  when: env_file.stat.exists
+- name: "create the {{ env_file_path }}"
+  copy:
+    dest: "{{ env_file_path }}"
+    content: |
+      PATH=$PATH
+  when: not env_file.stat.exists or not path_in_env_file_content.found
+- name: "add \"{{ extra_path }}\" to path"
+  lineinfile:
+    dest: "{{ env_file_path }}"
+    state: present
+    backrefs: true
+    regexp: "PATH=((?!.*?{{ extra_path }}).*?)$"
+    line: "PATH=\\1:{{ extra_path }}"

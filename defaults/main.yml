@@ -1,0 +1,4 @@
+---
+env_file_path: /etc/profile.d/ansible_added_path.sh
+required_vars:
+  - extra_path
