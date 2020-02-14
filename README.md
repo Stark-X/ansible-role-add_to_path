@@ -26,7 +26,7 @@ Dependencies
 # mandatory
 - src: https://github.com/Stark-X/ansible-role-mandatory.git
   version: 1.0
-  name: manadtory
+  name: mandatory
 ```
 
 Example Playbook
