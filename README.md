@@ -25,7 +25,7 @@ Dependencies
 ``` yaml
 # mandatory
 - src: https://github.com/Stark-X/ansible-role-mandatory.git
-  version: 1.0
+  version: "1.0"
   name: mandatory
 ```
 
